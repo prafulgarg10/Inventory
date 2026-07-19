@@ -9,7 +9,7 @@ public class Product
     public int ReservedQuantity {get; private set;}
     public DateTime CreatedAt {get; private set;}
     public DateTime? ModifiedAt {get; private set;} 
-    public byte[] RowVersion {get; private set;} = default;
+    public uint Version {get; private set;}
     
     private Product(){}
     private Product(string name, decimal unitPrice, int quantity)

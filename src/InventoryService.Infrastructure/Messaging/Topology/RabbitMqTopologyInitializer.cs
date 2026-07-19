@@ -26,5 +26,16 @@ public class RabbitMqTopologyInitializer : IRabbitMqTopologyInitializer
             durable: true,
             autoDelete: false,
             cancellationToken: cancellationToken);
+
+        await channel.QueueDeclareAsync(
+            queue: QueueNames.InventoryReservation,
+            durable: true,
+            exclusive: false,
+            autoDelete: false);
+
+        await channel.QueueBindAsync(
+            queue: QueueNames.InventoryReservation,
+            exchange: _options.Exchange,
+            routingKey: RoutingKeys.OrderCreated);
     }
 }

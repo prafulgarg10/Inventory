@@ -13,7 +13,7 @@ public sealed class GetProductsHandler
 
     public async Task<GetProductsResult> HandleAsync(GetProductsQuery query, CancellationToken cancellationToken)
     {
-        var response = await _productRepository.GetByIdsAsync(query.Products.Select(p => p.ProductId).ToList(), cancellationToken);
+        var response = await _productRepository.GetByIdsAsync(query.ProductIds, cancellationToken);
         return new GetProductsResult(response.Select(p => new ProductDTO(p.ProductId, p.UnitPrice)).ToList());
     }
 }

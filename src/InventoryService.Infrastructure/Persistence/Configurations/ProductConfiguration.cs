@@ -10,6 +10,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(p => p.Name).HasMaxLength(200).IsRequired();
         builder.Property(p => p.ReservedQuantity).IsRequired();
         builder.Property(p => p.AvailableQuantity).IsRequired();
-        builder.Property(p => p.RowVersion).IsRowVersion();
+        builder.Property(p => p.Version).IsRowVersion();
     }
 }

@@ -29,7 +29,7 @@ public sealed class OutboxPublisherBackgroundService : BackgroundService
             {
                 _logger.LogError(ex, "Error occurred while publishing outbox messages");
             }
-            await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
         }
     }
 
