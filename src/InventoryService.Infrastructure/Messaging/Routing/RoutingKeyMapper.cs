@@ -3,13 +3,23 @@ using InventoryService.Domain.Events;
 namespace InventoryService.Infrastructure.Messaging.Routing;
 public static class RoutingKeyMapper
 {
-    public static string GetRoutingKey(IIntegrationEvent integrationEvent)
+    private static readonly Dictionary<string, string> _map = new()
     {
-        return integrationEvent switch
+        [nameof(InventoryReservedEvent)] =
+            RoutingKeys.InventoryReserved,
+
+        [nameof(InventoryReservedFailedEvent)] =
+            RoutingKeys.InventoryReservedFailed
+    };
+
+    public static string Get(string eventType)
+    {
+        if (!_map.TryGetValue(eventType, out var routingKey))
         {
-            InventoryReservedEvent => "inventory.reserved",
-            InventoryReservedFailedEvent => "inventory.reserved.failed",
-            _ => throw new NotSupportedException($"No routing key configured for {integrationEvent.GetType().Name}")
-        };
+            throw new InvalidOperationException(
+                $"No routing key configured for event '{eventType}'.");
+        }
+
+        return routingKey;
     }
 }

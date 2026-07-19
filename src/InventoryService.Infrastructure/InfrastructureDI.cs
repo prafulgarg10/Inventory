@@ -1,4 +1,9 @@
 ﻿using InventoryService.Application.Interfaces;
+using InventoryService.Infrastructure.BackgroundServices;
+using InventoryService.Infrastructure.Messaging.Configurations;
+using InventoryService.Infrastructure.Messaging.Connections;
+using InventoryService.Infrastructure.Messaging.Publisher;
+using InventoryService.Infrastructure.Messaging.Topology;
 using InventoryService.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,13 +24,14 @@ public static class InfrastructureDI
         services.AddScoped<IProcessedMessageRepository, ProcessedMessageRepository>();
         services.AddScoped<IUnitofWorkRepository, UnitofWorkRepository>();
 
-        // services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.SectionName));
-        // services.AddSingleton<RabbitMqConnection>();
-        // services.AddSingleton<IMessagePublisher, RabbitMqPublisher>();
-        // services.AddSingleton<IRabbitMqTopologyInitializer, RabbitMqTopologyInitializer>();
-        // services.AddSingleton<IPublisherConfirmationAwaiter, PublisherConfirmationAwaiter>();
+        services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.SectionName));
+        services.AddSingleton<RabbitMqConnection>();
+        services.AddSingleton<IMessagePublisher, RabbitMqPublisher>();
+        services.AddSingleton<IRabbitMqTopologyInitializer, RabbitMqTopologyInitializer>();
+        services.AddSingleton<IPublisherConfirmationAwaiter, PublisherConfirmationAwaiter>();
 
-        // services.AddHostedService<OutboxPublisherBackgroundService>();
+        services.AddHostedService<OutboxPublisherBackgroundService>();
+        services.AddHostedService<ReserveInventoryConsumer>();
         return services;
     }
 }
