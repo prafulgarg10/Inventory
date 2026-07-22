@@ -28,6 +28,14 @@ public sealed class ReserveInventoryConsumer : BackgroundService
             await HandleMessageAsync(channel, args, stoppingToken);
         };
 
+        //this will let rabbitmq send only one message at a time for ack.
+        await channel.BasicQosAsync(
+            prefetchSize: 0,
+            prefetchCount: 1,
+            global: false,
+            cancellationToken: stoppingToken
+        );
+
         await channel.BasicConsumeAsync(
             queue: QueueNames.InventoryReservation,
             autoAck: false,

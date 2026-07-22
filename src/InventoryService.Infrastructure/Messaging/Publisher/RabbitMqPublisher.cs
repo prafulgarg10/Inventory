@@ -27,7 +27,9 @@ public class RabbitMqPublisher : IMessagePublisher
         {
             await using var channel = await _connection.CreateChannelAsync(cancellationToken);
 
-            await _publisherConfirmationAwaiter.ExecuteConfirmationAsync(() => PublishInternalAsync(channel, routingKey, message, cancellationToken), channel, cancellationToken);
+            await PublishInternalAsync(channel, routingKey, message, cancellationToken);
+
+            //await _publisherConfirmationAwaiter.ExecuteConfirmationAsync(() => PublishInternalAsync(channel, routingKey, message, cancellationToken), channel, cancellationToken);
         }
         catch(Exception ex)
         {
